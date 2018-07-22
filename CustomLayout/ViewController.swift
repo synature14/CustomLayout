@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension ViewController: RDPhotoLayoutDelegate {
+extension ViewController: PhotoLayoutDelegate {
     func size(at: IndexPath) -> CGSize {
         
         guard let image = images[at.item] else {
@@ -22,22 +22,35 @@ extension ViewController: RDPhotoLayoutDelegate {
         print("resizedWidth : \(resizedWidth), resizedHeight: \(resizedHeight)")
         return CGSize(width: resizedWidth, height: resizedHeight)
     }
+    
+    func switchCell() -> Bool {
+        if layoutType == .custom {
+            return false
+        } else {
+            return true
+        }
+    }
 }
 
 
 class ViewController: UIViewController {
+    
+    enum LayoutType {
+        case custom, flow
+    }
 
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var images = [ UIImage(named: "01")]
+    var images = [UIImage(named: "01")]
+    var layoutType: LayoutType = .custom
     
     let oneLayout = OnePhotoLayout()
     let twoLayout = TwoPhotosLayout()
     let threeLayout = ThreePhotosLayout()
     let fourLayout = FourPhotosLayout()
     let fiveLayout = FivePhotosLayout()
-    let flowLayout = UICollectionViewFlowLayout()
-
+//    let flowLayout = UICollectionViewFlowLayout()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,7 +59,9 @@ class ViewController: UIViewController {
         threeLayout.delegate = self
         fourLayout.delegate = self
         fiveLayout.delegate = self
-        
+
+//        flowLayout.scrollDirection = .horizontal
+
         collectionView.setCollectionViewLayout(oneLayout, animated: true)
     }
 
@@ -68,43 +83,68 @@ class ViewController: UIViewController {
        
         switch images.count {
         case 2:
+            layoutType = .custom
             collectionView.setCollectionViewLayout(twoLayout, animated: true)
         case 3:
+            layoutType = .custom
             collectionView.setCollectionViewLayout(threeLayout, animated: true)
         case 4:
+            layoutType = .custom
             collectionView.setCollectionViewLayout(fourLayout, animated: true)
         case 5:
+            layoutType = .custom
             collectionView.setCollectionViewLayout(fiveLayout, animated: true)
+        case 6:
+            layoutType = .flow
+            collectionView.setCollectionViewLayout(oneLayout, animated: true)
         default:
-            collectionView.setCollectionViewLayout(flowLayout, animated: true)
+            break
         }
+        
         collectionView.reloadData()
+//        collectionView.collectionViewLayout.invalidateLayout()
     }
 }
 
 
 extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let _ = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            return 1
-        } else {
+        switch layoutType {
+        case .custom:
             return images.count
+        case .flow:
+            return 1
         }
     }
     
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let _ = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: "MultiImageCell", for: indexPath) as? ImageCollectionViewCell
-            return cell ?? UICollectionViewCell()
-        } else {
+        switch layoutType {
+        case .custom:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as? ImageCollectionViewCell
             cell?.eachImageView.image = images[indexPath.item]
             return cell ?? UICollectionViewCell()
+
+        case .flow:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "MultiCollectionCell", for: indexPath) as! MultiImageCollectionViewCell
+            cell.setModels(bigItem: images.first!, items: images as! [UIImage])
+            return cell
+
         }
     }
 }
+
+//extension ViewController: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+//                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return CGSize(width: collectionView.bounds.size.width, height: collectionView.bounds.size.height)
+//    }
+//}
 
 
 

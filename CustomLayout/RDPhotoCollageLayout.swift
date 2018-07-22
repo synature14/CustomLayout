@@ -9,9 +9,6 @@
 import Foundation
 import Photos
 //import RxSwift
-protocol RDPhotoLayoutDelegate {
-    func size(at: IndexPath) -> CGSize
-}
 
 public class RDPhotoCollageLayout: UICollectionViewLayout {
     
@@ -37,7 +34,7 @@ public class RDPhotoCollageLayout: UICollectionViewLayout {
     }()
     
 //    weak var delegate: RDPhotoLayoutDelegate?
-    var delegate: RDPhotoLayoutDelegate?
+    var delegate: PhotoLayoutDelegate?
     var cellSpacing: CGFloat = 5
     var lineSpacing: CGFloat = 5
     var isHighlighted = false

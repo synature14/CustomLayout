@@ -10,7 +10,7 @@ import UIKit
 
 class TwoPhotosLayout: UICollectionViewLayout {
     
-    var delegate: RDPhotoLayoutDelegate!
+    var delegate: PhotoLayoutDelegate!
     var cellSpacing: CGFloat = 2.5
     // 3
     fileprivate var cache = [UICollectionViewLayoutAttributes]()

@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol PhotoLayoutDelegate {
+    func size(at: IndexPath) -> CGSize
+    func switchCell() -> Bool
+}
+
 class OnePhotoLayout: UICollectionViewLayout {
     
-    var delegate: RDPhotoLayoutDelegate?
+    var delegate: PhotoLayoutDelegate?
     fileprivate var cache = [UICollectionViewLayoutAttributes]()
     let indexPath = IndexPath(item: 0, section: 0)
     

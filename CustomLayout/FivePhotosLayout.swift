@@ -9,10 +9,10 @@
 import UIKit
 
 class FivePhotosLayout: UICollectionViewLayout {
-    var delegate: RDPhotoLayoutDelegate!
+    var delegate: PhotoLayoutDelegate!
     var cellSpacing: CGFloat = 2.5
     // 3
-    fileprivate var cache = [UICollectionViewLayoutAttributes]()
+    var cache = [UICollectionViewLayoutAttributes]()
     
     var numberOfColumns = 2
     var photoHeight = CGFloat(0)
@@ -98,7 +98,7 @@ class FivePhotosLayout: UICollectionViewLayout {
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        guard indexPath.item >= 0, indexPath.item < cache.count else {
+        guard indexPath.item >= 0, indexPath.item < cache.count, delegate.switchCell() == false else {
             return nil
         }
         return cache[indexPath.item]

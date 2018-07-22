@@ -29,10 +29,10 @@ class MultiImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bigImageView: UIImageView!
     
-    private(set) var bigItem: UIImage?
-    private(set) var items: [UIImage] = []
+    private var bigItem: UIImage?
+    private var items: [UIImage] = []
     
-    func setModels(bigItem: UIImage, items: [UIImage]) {
+    func setModels(bigItem: UIImage?, items: [UIImage]) {
         self.bigItem = bigItem
         self.items = items
         updateUI()
@@ -44,16 +44,19 @@ class MultiImageCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension MultiImageCollectionViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MultiImageCollectionViewCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? SmallImageCell else {
-            return UICollectionViewCell()
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SmallCell", for: indexPath) as! SmallImageCell
         cell.model = items[indexPath.item]
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 65, height: 65)
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 
 class FourPhotosLayout: UICollectionViewLayout {
     
-    var delegate: RDPhotoLayoutDelegate!
+    var delegate: PhotoLayoutDelegate!
     var cellSpacing: CGFloat = 2.5
     // 3
     fileprivate var cache = [UICollectionViewLayoutAttributes]()
@@ -43,7 +43,7 @@ class FourPhotosLayout: UICollectionViewLayout {
         super.prepare()
         
         guard let collectionView = collectionView, collectionView.numberOfItems(inSection: 0) == 4,
-            let delegate = delegate else {
+            let _ = delegate else {
                 return
         }
         
