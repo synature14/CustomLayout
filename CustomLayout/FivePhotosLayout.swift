@@ -42,62 +42,45 @@ class FivePhotosLayout: UICollectionViewLayout {
         super.prepare()
         
         guard let collectionView = collectionView, collectionView.numberOfItems(inSection: 0) == 5,
-            let delegate = delegate else {
+            let _ = delegate else {
                 return
         }
         
         cache.removeAll()
+        contentHeight = collectionView.bounds.height
         
-        // 두번째 사진이 추가될때
+        var xOffset: CGFloat = 0
+        var yOffset: CGFloat = 0
         
-        let columnWidth = contentWidth / CGFloat(numberOfColumns)
-        var xOffset = [CGFloat]()
-        for column in 0 ..< numberOfColumns {
-            xOffset.append(CGFloat(column) * columnWidth)
-            print("xOffset : \(xOffset[column])")
-        }
-        var row = 0
-        var yOffset = [CGFloat](repeating: 0, count: numberOfColumns)
-        let bottomContentWidth = (contentWidth - cellSpacing * 2) / 3
+        let numberOfFirstRowPhoto = 2
+        let firstRowPhotoHeight = contentHeight * (2 / 3)
+        let firstRowPhotoWidth = contentWidth / CGFloat(numberOfFirstRowPhoto)
         
-        // 3
-        for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
-            
+        for item in 0 ..< numberOfFirstRowPhoto {
             let indexPath = IndexPath(item: item, section: 0)
-            
-            if indexPath.item == 0 || indexPath.item == 2 {
-                row = 0
-            } else if indexPath.item == 1 {
-                row = 1
-            } else if indexPath.item == 3 {
-                xOffset.append(xOffset[0] + bottomContentWidth + cellSpacing)
-                row = 2
-                yOffset[row] = 
-            } else if indexPath.item == 4 {
-                xOffset.append(xOffset[3] + bottomContentWidth + cellSpacing)
-            }
-            
-            if indexPath.item == 0 {
-                photoHeight = collectionView.bounds.height * 2/3
-            } else if indexPath.item == 2 {
-                photoHeight = (photoHeight) / 2
-            }
-            
-            // 4
-            let height = cellSpacing + photoHeight
-            
-            
-            let frame = CGRect(x: xOffset[row], y: yOffset[row], width: columnWidth, height: height)
-            let insetFrame = frame.insetBy(dx: cellSpacing, dy: cellSpacing)
-            
-            // 5
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-            attributes.frame = insetFrame
+            attributes.frame.size.height = firstRowPhotoHeight
+            attributes.frame.size.width = firstRowPhotoWidth
+            attributes.frame.origin = CGPoint(x: xOffset, y: yOffset)
+            xOffset += firstRowPhotoWidth + cellSpacing
             cache.append(attributes)
-            
-            // 6
-            contentHeight = max(contentHeight, frame.maxY)
-            yOffset[row] = yOffset[row] + height
+        }
+        
+        yOffset = firstRowPhotoHeight
+        xOffset = 0
+        
+        let numberOfSecondRowPhoto = 3
+        let secondRowPhotoHeight = contentHeight * (1 / 3)
+        let secondRowPhotoWidth = contentWidth / CGFloat(numberOfSecondRowPhoto)
+        
+        for item in 2 ..< 5 {
+            let indexPath = IndexPath(item: item, section: 0)
+            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+            attributes.frame.size.height = secondRowPhotoHeight
+            attributes.frame.size.width = secondRowPhotoWidth
+            attributes.frame.origin = CGPoint(x: xOffset, y: yOffset)
+            xOffset += secondRowPhotoWidth + cellSpacing
+            cache.append(attributes)
         }
     }
     

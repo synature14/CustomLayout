@@ -31,11 +31,12 @@ class ViewController: UIViewController {
     
     var images = [ UIImage(named: "01")]
     
-    var oneLayout = OnePhotoLayout()
-    var twoLayout = TwoPhotosLayout()
-    var threeLayout = ThreePhotosLayout()
-    var fourLayout = FourPhotosLayout()
-    var fiveLayout = FivePhotosLayout()
+    let oneLayout = OnePhotoLayout()
+    let twoLayout = TwoPhotosLayout()
+    let threeLayout = ThreePhotosLayout()
+    let fourLayout = FourPhotosLayout()
+    let fiveLayout = FivePhotosLayout()
+    let flowLayout = UICollectionViewFlowLayout()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,9 +76,8 @@ class ViewController: UIViewController {
         case 5:
             collectionView.setCollectionViewLayout(fiveLayout, animated: true)
         default:
-            ()
+            collectionView.setCollectionViewLayout(flowLayout, animated: true)
         }
-
         collectionView.reloadData()
     }
 }
@@ -85,13 +85,24 @@ class ViewController: UIViewController {
 
 extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+        if let _ = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            return 1
+        } else {
+            return images.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as! ImageCollectionViewCell
-        cell.eachImageView.image = images[indexPath.item]
-        return cell
+        if let _ = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "MultiImageCell", for: indexPath) as? ImageCollectionViewCell
+            return cell ?? UICollectionViewCell()
+        } else {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as? ImageCollectionViewCell
+            cell?.eachImageView.image = images[indexPath.item]
+            return cell ?? UICollectionViewCell()
+        }
     }
 }
 
