@@ -34,6 +34,8 @@ class ViewController: UIViewController {
     var oneLayout = OnePhotoLayout()
     var twoLayout = TwoPhotosLayout()
     var threeLayout = ThreePhotosLayout()
+    var fourLayout = FourPhotosLayout()
+    var fiveLayout = FivePhotosLayout()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +43,8 @@ class ViewController: UIViewController {
         oneLayout.delegate = self
         twoLayout.delegate = self
         threeLayout.delegate = self
+        fourLayout.delegate = self
+        fiveLayout.delegate = self
         
         collectionView.setCollectionViewLayout(oneLayout, animated: true)
     }
@@ -55,15 +59,21 @@ class ViewController: UIViewController {
             return
         }
         let imageName = "0" + "\(images.count+1)"
-        images.append(UIImage(named: imageName))
+        if let image = UIImage(named: imageName) {
+            images.append(image)
+        } else {
+            print("image is not cutie than sutie")
+        }
        
         switch images.count {
         case 2:
             collectionView.setCollectionViewLayout(twoLayout, animated: true)
-//            twoLayout.delegate = self
         case 3:
             collectionView.setCollectionViewLayout(threeLayout, animated: true)
-//            threeLayout.delegate = self
+        case 4:
+            collectionView.setCollectionViewLayout(fourLayout, animated: true)
+        case 5:
+            collectionView.setCollectionViewLayout(fiveLayout, animated: true)
         default:
             ()
         }

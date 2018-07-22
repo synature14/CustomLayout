@@ -1,19 +1,19 @@
 //
-//  ThreePhotosLayout.swift
+//  FourPhotosLayout.swift
 //  CustomLayout
 //
-//  Created by sutie on 2018. 7. 21..
+//  Created by sutie on 2018. 7. 22..
 //  Copyright © 2018년 sutie. All rights reserved.
 //
 
 import UIKit
 
-class ThreePhotosLayout: UICollectionViewLayout {
-
+class FourPhotosLayout: UICollectionViewLayout {
+    
     var delegate: RDPhotoLayoutDelegate!
     var cellSpacing: CGFloat = 2.5
     // 3
-    var cache = [UICollectionViewLayoutAttributes]()
+    fileprivate var cache = [UICollectionViewLayoutAttributes]()
     
     var numberOfColumns = 2
     var photoHeight = CGFloat(0)
@@ -42,7 +42,7 @@ class ThreePhotosLayout: UICollectionViewLayout {
     override public func prepare() {
         super.prepare()
         
-        guard let collectionView = collectionView, collectionView.numberOfItems(inSection: 0) == 3,
+        guard let collectionView = collectionView, collectionView.numberOfItems(inSection: 0) == 4,
             let delegate = delegate else {
                 return
         }
@@ -62,20 +62,19 @@ class ThreePhotosLayout: UICollectionViewLayout {
         
         // 3
         for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
-        
+            
             let indexPath = IndexPath(item: item, section: 0)
             
-            if indexPath.item == 1 || indexPath.item == 2 {
-                column = 1
-            } else {
+            if indexPath.item == 0 {
                 column = 0
+            } else {
+                column = 1
             }
             
-            // 첫번째 사진의 높이만큼 두번쨰 사진도 높이 조절
             if indexPath.item == 0 {
                 photoHeight = collectionView.bounds.height
-            } else if indexPath.item == 1 {     // 두,세번쨰 사진의 높이는 첫번째 사진 height의 절반
-                photoHeight = (photoHeight - cellSpacing) / 2
+            } else if indexPath.item == 1 {
+                photoHeight = (photoHeight - cellSpacing * 2) / 3
             }
             
             // 4
@@ -109,10 +108,9 @@ class ThreePhotosLayout: UICollectionViewLayout {
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        guard !indexPath.isEmpty, indexPath.item >= 0, indexPath.item < cache.count else {
+        guard indexPath.item >= 0, indexPath.item < cache.count else {
             return nil
         }
         return cache[indexPath.item]
     }
-    
 }

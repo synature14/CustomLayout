@@ -30,7 +30,11 @@ class OnePhotoLayout: UICollectionViewLayout {
     override func prepare() {
         super.prepare()
         
-        guard let collectionView = collectionView else { return }
+        guard let collectionView = collectionView else {
+            return
+        }
+        
+        cache.removeAll()
         
         contentHeight = collectionView.frame.size.height
         let frame = CGRect(x: 0, y: 0,
@@ -54,12 +58,9 @@ class OnePhotoLayout: UICollectionViewLayout {
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        
-        // 사진이 두개 이상이면
-        if indexPath.item > 0 {
+        guard indexPath.item >= 0, indexPath.item < cache.count else {
             return nil
         }
-        
         return cache[indexPath.item]
     }
 }

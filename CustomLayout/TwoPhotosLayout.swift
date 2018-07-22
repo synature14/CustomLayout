@@ -29,7 +29,9 @@ class TwoPhotosLayout: UICollectionViewLayout {
     
     
     override public var collectionViewContentSize: CGSize {
-        guard let collectionView = collectionView else { return .zero }
+        guard let _ = collectionView else {
+            return .zero
+        }
         return CGSize(width: contentWidth, height: contentHeight)
     }
     
@@ -42,8 +44,11 @@ class TwoPhotosLayout: UICollectionViewLayout {
     override public func prepare() {
         super.prepare()
         
-        guard let collectionView = collectionView,
-            let delegate = delegate else { return }
+        guard let collectionView = collectionView, let delegate = delegate else {
+            return
+        }
+        
+        cache.removeAll()
         
         // 두번째 사진이 추가될때
         
@@ -62,7 +67,8 @@ class TwoPhotosLayout: UICollectionViewLayout {
             
             // 첫번째 사진의 높이만큼 두번쨰 사진도 높이 조절
             if indexPath.item == 0 {
-                photoHeight = delegate.size(at: indexPath).height
+                photoHeight = collectionView.bounds.height
+//                photoHeight = delegate.size(at: indexPath).height
             }
             
             // 4
@@ -97,6 +103,9 @@ class TwoPhotosLayout: UICollectionViewLayout {
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard indexPath.item >= 0, indexPath.item < cache.count else {
+            return nil
+        }
         return cache[indexPath.item]
     }
     
