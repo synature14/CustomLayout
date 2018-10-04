@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "sutiePhoto.jpg",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "03@2x.jpeg",
       "scale" : "2x"
     },
     {

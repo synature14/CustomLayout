@@ -2,7 +2,7 @@
 //  OnePhotoLayout.swift
 //  CustomLayout
 //
-//  Created by sutie on 2018. 7. 21..
+//  Created by sutie on 2018. 3. 21..
 //  Copyright © 2018년 sutie. All rights reserved.
 //
 

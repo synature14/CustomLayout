@@ -19,7 +19,6 @@ extension ViewController: PhotoLayoutDelegate {
         
         let resizedWidth = image.size.width / 2
         let resizedHeight = image.size.height / 2
-        print("resizedWidth : \(resizedWidth), resizedHeight: \(resizedHeight)")
         return CGSize(width: resizedWidth, height: resizedHeight)
     }
     
@@ -59,9 +58,6 @@ class ViewController: UIViewController {
         threeLayout.delegate = self
         fourLayout.delegate = self
         fiveLayout.delegate = self
-
-//        flowLayout.scrollDirection = .horizontal
-
         collectionView.setCollectionViewLayout(oneLayout, animated: true)
     }
 
@@ -70,8 +66,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction func addPhotoTapped(_ sender: Any) {
-        if images.count > 5 {
+        if images.count > 4 {
             print("Done")
+            images = [UIImage(named: "01")]
+            layoutType = .flow
+            collectionView.setCollectionViewLayout(oneLayout, animated: true)
             return
         }
         let imageName = "0" + "\(images.count+1)"
@@ -82,6 +81,9 @@ class ViewController: UIViewController {
         }
        
         switch images.count {
+        case 1:
+            layoutType = .flow
+            collectionView.setCollectionViewLayout(oneLayout, animated: true)
         case 2:
             layoutType = .custom
             collectionView.setCollectionViewLayout(twoLayout, animated: true)
@@ -94,9 +96,6 @@ class ViewController: UIViewController {
         case 5:
             layoutType = .custom
             collectionView.setCollectionViewLayout(fiveLayout, animated: true)
-        case 6:
-            layoutType = .flow
-            collectionView.setCollectionViewLayout(oneLayout, animated: true)
         default:
             break
         }

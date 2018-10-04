@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -133,11 +134,12 @@
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="42n-t4-42g">
-                                <rect key="frame" x="157.5" y="557" width="60" height="60"/>
+                                <rect key="frame" x="30" y="557" width="315" height="60"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="pfn-Zm-aeG"/>
                                     <constraint firstAttribute="height" constant="60" id="y3n-b1-Ufs"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                 <state key="normal" title="Add"/>
                                 <connections>
                                     <action selector="addPhotoTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3YI-ew-p3p"/>
@@ -150,7 +152,9 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9WS-Nc-3Yp" secondAttribute="trailing" id="3KP-Iu-ZBH"/>
                             <constraint firstItem="9WS-Nc-3Yp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="RD0-Ry-Ihi"/>
                             <constraint firstItem="9WS-Nc-3Yp" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="UMe-4N-Kt7"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="42n-t4-42g" secondAttribute="trailing" constant="30" id="c4m-9o-fw6"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="42n-t4-42g" secondAttribute="bottom" constant="50" id="tex-GW-ZVq"/>
+                            <constraint firstItem="42n-t4-42g" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="30" id="v4M-AR-kMp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

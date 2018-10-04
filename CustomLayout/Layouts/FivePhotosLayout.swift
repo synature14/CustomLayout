@@ -1,19 +1,18 @@
 //
-//  TwoPhotosLayout.swift
+//  FivePhotosLayout.swift
 //  CustomLayout
 //
-//  Created by sutie on 2018. 7. 21..
+//  Created by sutie on 2018. 3. 22..
 //  Copyright © 2018년 sutie. All rights reserved.
 //
 
 import UIKit
 
-class TwoPhotosLayout: UICollectionViewLayout {
-    
+class FivePhotosLayout: UICollectionViewLayout {
     var delegate: PhotoLayoutDelegate!
     var cellSpacing: CGFloat = 2.5
     // 3
-    fileprivate var cache = [UICollectionViewLayoutAttributes]()
+    var cache = [UICollectionViewLayoutAttributes]()
     
     var numberOfColumns = 2
     var photoHeight = CGFloat(0)
@@ -29,9 +28,7 @@ class TwoPhotosLayout: UICollectionViewLayout {
     
     
     override public var collectionViewContentSize: CGSize {
-        guard let _ = collectionView else {
-            return .zero
-        }
+        guard let _ = collectionView else { return .zero }
         return CGSize(width: contentWidth, height: contentHeight)
     }
     
@@ -44,48 +41,46 @@ class TwoPhotosLayout: UICollectionViewLayout {
     override public func prepare() {
         super.prepare()
         
-        guard let collectionView = collectionView, let delegate = delegate else {
-            return
+        guard let collectionView = collectionView, collectionView.numberOfItems(inSection: 0) == 5,
+            let _ = delegate else {
+                return
         }
         
         cache.removeAll()
+        contentHeight = collectionView.bounds.height
         
-        // 두번째 사진이 추가될때
+        var xOffset: CGFloat = 0
+        var yOffset: CGFloat = 0
         
-        let columnWidth = contentWidth / CGFloat(numberOfColumns)
-        var xOffset = [CGFloat]()
-        for column in 0 ..< numberOfColumns {
-            xOffset.append(CGFloat(column) * columnWidth)
-        }
-        var column = 0
-        var yOffset = [CGFloat](repeating: 0, count: numberOfColumns)
+        let numberOfFirstRowPhoto = 2
+        let firstRowPhotoHeight = contentHeight * (2 / 3)
+        let firstRowPhotoWidth = contentWidth / CGFloat(numberOfFirstRowPhoto)
         
-        // 3
-        for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
-            
+        for item in 0 ..< numberOfFirstRowPhoto {
             let indexPath = IndexPath(item: item, section: 0)
-            
-            // 첫번째 사진의 높이만큼 두번쨰 사진도 높이 조절
-            if indexPath.item == 0 {
-                photoHeight = collectionView.bounds.height
-//                photoHeight = delegate.size(at: indexPath).height
-            }
-            
-            // 4
-            let height = cellSpacing * 2 + photoHeight
-            let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: height)
-            let insetFrame = frame.insetBy(dx: cellSpacing, dy: cellSpacing)
-            
-            // 5
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-            attributes.frame = insetFrame
+            attributes.frame.size.height = firstRowPhotoHeight
+            attributes.frame.size.width = firstRowPhotoWidth
+            attributes.frame.origin = CGPoint(x: xOffset, y: yOffset)
+            xOffset += firstRowPhotoWidth + cellSpacing
             cache.append(attributes)
-            
-            // 6
-            contentHeight = max(contentHeight, frame.maxY)
-            yOffset[column] = yOffset[column] + height
-            
-            column = column < (numberOfColumns - 1) ? (column + 1) : 0
+        }
+        
+        yOffset = firstRowPhotoHeight
+        xOffset = 0
+        
+        let numberOfSecondRowPhoto = 3
+        let secondRowPhotoHeight = contentHeight * (1 / 3)
+        let secondRowPhotoWidth = contentWidth / CGFloat(numberOfSecondRowPhoto)
+        
+        for item in 2 ..< 5 {
+            let indexPath = IndexPath(item: item, section: 0)
+            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+            attributes.frame.size.height = secondRowPhotoHeight
+            attributes.frame.size.width = secondRowPhotoWidth
+            attributes.frame.origin = CGPoint(x: xOffset, y: yOffset)
+            xOffset += secondRowPhotoWidth + cellSpacing
+            cache.append(attributes)
         }
     }
     
@@ -103,10 +98,9 @@ class TwoPhotosLayout: UICollectionViewLayout {
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        guard indexPath.item >= 0, indexPath.item < cache.count else {
+        guard indexPath.item >= 0, indexPath.item < cache.count, delegate.switchCell() == false else {
             return nil
         }
         return cache[indexPath.item]
     }
-    
 }

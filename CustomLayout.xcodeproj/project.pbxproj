@@ -68,21 +68,29 @@
 		9820955020FB4A200051FA9D /* CustomLayout */ = {
 			isa = PBXGroup;
 			children = (
-				9820955A20FB4A210051FA9D /* LaunchScreen.storyboard */,
-				9820955120FB4A200051FA9D /* AppDelegate.swift */,
+				98A7A01621663E7400CDFD8D /* Layouts */,
 				9820955320FB4A200051FA9D /* ViewController.swift */,
+				98941A622102FD5000126472 /* ImageCollectionViewCell.swift */,
+				9820955A20FB4A210051FA9D /* LaunchScreen.storyboard */,
 				9820955520FB4A200051FA9D /* Main.storyboard */,
 				9820955820FB4A210051FA9D /* Assets.xcassets */,
+				9820955120FB4A200051FA9D /* AppDelegate.swift */,
 				9820955D20FB4A210051FA9D /* Info.plist */,
+			);
+			path = CustomLayout;
+			sourceTree = "<group>";
+		};
+		98A7A01621663E7400CDFD8D /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
 				9820956320FB4AE20051FA9D /* RDPhotoCollageLayout.swift */,
-				98941A622102FD5000126472 /* ImageCollectionViewCell.swift */,
 				98941A682103187900126472 /* OnePhotoLayout.swift */,
 				98941A642103048500126472 /* TwoPhotosLayout.swift */,
 				98941A66210315AF00126472 /* ThreePhotosLayout.swift */,
 				9880025C21044A10001156FF /* FourPhotosLayout.swift */,
 				9880025E21045648001156FF /* FivePhotosLayout.swift */,
 			);
-			path = CustomLayout;
+			path = Layouts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

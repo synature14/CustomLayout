@@ -1,19 +1,19 @@
 //
-//  ThreePhotosLayout.swift
+//  TwoPhotosLayout.swift
 //  CustomLayout
 //
-//  Created by sutie on 2018. 7. 21..
+//  Created by sutie on 2018. 3. 21..
 //  Copyright © 2018년 sutie. All rights reserved.
 //
 
 import UIKit
 
-class ThreePhotosLayout: UICollectionViewLayout {
-
+class TwoPhotosLayout: UICollectionViewLayout {
+    
     var delegate: PhotoLayoutDelegate!
     var cellSpacing: CGFloat = 2.5
     // 3
-    var cache = [UICollectionViewLayoutAttributes]()
+    fileprivate var cache = [UICollectionViewLayoutAttributes]()
     
     var numberOfColumns = 2
     var photoHeight = CGFloat(0)
@@ -29,7 +29,9 @@ class ThreePhotosLayout: UICollectionViewLayout {
     
     
     override public var collectionViewContentSize: CGSize {
-        guard let _ = collectionView else { return .zero }
+        guard let _ = collectionView else {
+            return .zero
+        }
         return CGSize(width: contentWidth, height: contentHeight)
     }
     
@@ -42,9 +44,8 @@ class ThreePhotosLayout: UICollectionViewLayout {
     override public func prepare() {
         super.prepare()
         
-        guard let collectionView = collectionView, collectionView.numberOfItems(inSection: 0) == 3,
-            let delegate = delegate else {
-                return
+        guard let collectionView = collectionView, let delegate = delegate else {
+            return
         }
         
         cache.removeAll()
@@ -55,31 +56,23 @@ class ThreePhotosLayout: UICollectionViewLayout {
         var xOffset = [CGFloat]()
         for column in 0 ..< numberOfColumns {
             xOffset.append(CGFloat(column) * columnWidth)
-            print("xOffset : \(xOffset[column])")
         }
         var column = 0
         var yOffset = [CGFloat](repeating: 0, count: numberOfColumns)
         
         // 3
         for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
-        
-            let indexPath = IndexPath(item: item, section: 0)
             
-            if indexPath.item == 1 || indexPath.item == 2 {
-                column = 1
-            } else {
-                column = 0
-            }
+            let indexPath = IndexPath(item: item, section: 0)
             
             // 첫번째 사진의 높이만큼 두번쨰 사진도 높이 조절
             if indexPath.item == 0 {
                 photoHeight = collectionView.bounds.height
-            } else if indexPath.item == 1 {     // 두,세번쨰 사진의 높이는 첫번째 사진 height의 절반
-                photoHeight = (photoHeight - cellSpacing) / 2
+//                photoHeight = delegate.size(at: indexPath).height
             }
             
             // 4
-            let height = cellSpacing + photoHeight
+            let height = cellSpacing * 2 + photoHeight
             let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: height)
             let insetFrame = frame.insetBy(dx: cellSpacing, dy: cellSpacing)
             
@@ -92,6 +85,7 @@ class ThreePhotosLayout: UICollectionViewLayout {
             contentHeight = max(contentHeight, frame.maxY)
             yOffset[column] = yOffset[column] + height
             
+            column = column < (numberOfColumns - 1) ? (column + 1) : 0
         }
     }
     
@@ -109,7 +103,7 @@ class ThreePhotosLayout: UICollectionViewLayout {
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        guard !indexPath.isEmpty, indexPath.item >= 0, indexPath.item < cache.count else {
+        guard indexPath.item >= 0, indexPath.item < cache.count else {
             return nil
         }
         return cache[indexPath.item]

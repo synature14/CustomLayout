@@ -2,7 +2,7 @@
 //  RDImageCollage.swift
 //  article
 //
-//  Created by 안덕환 on 2018. 2. 12..
+//  Created by sutie on 2018. 2. 12..
 //  Copyright © 2018년 Naver. All rights reserved.
 //
 
